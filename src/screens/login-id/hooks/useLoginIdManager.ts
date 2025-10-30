@@ -14,17 +14,11 @@ export const useLoginIdManager = () => {
 
   const { signupLink, resetPasswordLink, texts, captchaImage } = screen;
 
-  const handleLoginId = async (
-    loginId: string,
-    captcha?: string
-  ): Promise<void> => {
+  const handleLoginId = async (loginId: string): Promise<void> => {
     const options: { username: string; captcha?: string } = {
       username: loginId?.trim() || "",
     };
 
-    if (screen.isCaptchaAvailable && captcha?.trim()) {
-      options.captcha = captcha.trim();
-    }
     executeSafely(`LoginId with options: ${JSON.stringify(options)}`, () =>
       loginIdInstance.login(options)
     );
