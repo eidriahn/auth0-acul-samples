@@ -4,6 +4,7 @@ import type {
   Error,
   TransactionMembersOnLoginId,
 } from "@auth0/auth0-acul-js/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ULThemeFloatingLabelField } from "@/components/form/ULThemeFloatingLabelField";
 import { ULThemeFormMessage } from "@/components/form/ULThemeFormMessage";
@@ -21,10 +22,10 @@ import { getIdentifierDetails } from "@/utils/helpers/identifierUtils";
 import { rebaseLinkToCurrentOrigin } from "@/utils/helpers/urlUtils";
 
 import { useLoginIdManager } from "../hooks/useLoginIdManager";
+import { loginIdSchema } from "../schemas";
 
 interface LoginIdFormData {
-  identifier: string;
-  captcha?: string;
+  email: string;
 }
 
 function IdentifierForm() {
@@ -40,18 +41,20 @@ function IdentifierForm() {
 
   const form = useForm<LoginIdFormData>({
     defaultValues: {
-      identifier: "",
-      captcha: "",
+      email: "",
     },
+    resolver: zodResolver(loginIdSchema),
   });
 
   const {
+    watch,
     formState: { isSubmitting },
   } = form;
 
   // Handle text fallbacks in component
   const buttonText = texts?.buttonText || "Continue";
   const forgotPasswordText = texts?.forgotPasswordText || "Forgot Password?";
+  const emailFieldVal = watch("email");
 
   // Get general errors (not field-specific)
   const generalErrors =
@@ -76,13 +79,17 @@ function IdentifierForm() {
 
   // Proper submit handler with form data
   const onSubmit = async (data: LoginIdFormData) => {
-    await handleLoginId(data.identifier);
+    await handleLoginId(data.email);
   };
 
   const localizedResetPasswordLink =
     resetPasswordLink && rebaseLinkToCurrentOrigin(resetPasswordLink);
 
   const shouldShowCountryPicker = isPhoneNumberSupported(allowedIdentifiers);
+
+  const handlePasswordlessLoginStart = async () => {
+    console.log("Passwordless login start");
+  };
 
   return (
     <Form {...form}>
@@ -122,7 +129,7 @@ function IdentifierForm() {
         <div className="pb-6 w-full">
           <FormField
             control={form.control}
-            name="identifier"
+            name="email"
             rules={{
               required: "This field is required",
               maxLength: {
@@ -158,6 +165,20 @@ function IdentifierForm() {
           </div>
         )}
 
+        <div className="pb-4 w-full">
+          <ULThemePrimaryButton
+            type="button"
+            className="w-full"
+            disabled={
+              loginIdSchema.shape.email.safeParse(emailFieldVal).success ===
+              false
+            }
+            onClick={handlePasswordlessLoginStart}
+            variant="outline"
+          >
+            Send an Email
+          </ULThemePrimaryButton>
+        </div>
         {/* Button row with bottom padding */}
         <div className="pb-4 w-full">
           <ULThemePrimaryButton
