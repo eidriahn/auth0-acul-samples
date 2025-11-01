@@ -15,12 +15,11 @@ export interface ULThemeCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const ULThemeCard = ({ children, className, ...rest }: ULThemeCardProps) => {
   const themeClasses = cn(
-    "px-10",
-    "py-10",
+    "p-10",
     "theme-universal:bg-widget-bg",
+    "theme-universal:bg-white",
     "theme-universal:border-(--color-widget-border)",
     "theme-universal:rounded-widget",
-    "theme-universal:shadow-widget",
     "theme-universal:border-(length:--border-widget)",
     className
   );

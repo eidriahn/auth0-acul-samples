@@ -15,7 +15,8 @@ export function ULThemePrimaryButton({
       "p-6 border-0",
       "cursor-pointer",
       "theme-universal:bg-primary-button",
-      "theme-universal:text-(--ul-theme-color-primary-button-label)", //text-color
+      "theme-universal:bg-[#561496]",
+      "theme-universal:text-(--ul-theme-color-primary-button-label) theme-universal:text-white", //text-color
       "theme-universal:hover:shadow-[var(--button-hover-shadow)]",
       "theme-universal:focus:outline-none theme-universal:focus:ring-4 theme-universal:focus:ring-base-focus/15",
       "theme-universal:disabled:bg-primary-button/70",
@@ -32,26 +33,30 @@ export function ULThemePrimaryButton({
   // Size-specific theme overrides for border radius and typography
   const sizeThemeOverrides = {
     default: cn(
-      "theme-universal:rounded-button",
-      "theme-universal:font-button", //font-weight
-      "theme-universal:text-(length:--ul-theme-font-buttons-text-size)" //font-size
+      "theme-universal:rounded-[28px]",
+      "theme-universal:h-[52px]",
+      "theme-universal:px-8",
+      "theme-universal:py-4",
+      "theme-universal:font-button theme-universal:font-semibold", //font-weight
+      "theme-universal:text-(length:--ul-theme-font-buttons-text-size) theme-universal:text-[18px] theme-universal:leading-[24px]", //font-size
+      "theme-universal:text-center"
     ),
     xs: cn(
-      "theme-universal:rounded-button",
+      "theme-universal:rounded-[28px]",
       "theme-universal:font-button",
       "theme-universal:text-(length:--ul-theme-font-buttons-text-size)"
     ),
     sm: cn(
-      "theme-universal:rounded-button",
+      "theme-universal:rounded-[28px]",
       "theme-universal:font-button",
       "theme-universal:text-(length:--ul-theme-font-buttons-text-size)"
     ),
     lg: cn(
-      "theme-universal:rounded-button",
+      "theme-universal:rounded-[28px]",
       "theme-universal:font-button",
       "theme-universal:text-(length:--ul-theme-font-buttons-text-size)"
     ),
-    icon: cn("theme-universal:rounded-button"),
+    icon: cn("theme-universal:rounded-[28px]"),
   };
 
   // Combine all theme classes with proper type safety

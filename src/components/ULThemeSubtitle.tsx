@@ -19,7 +19,7 @@ const ULThemeSubtitle = ({
   ...rest
 }: ULThemeSubtitleProps) => {
   const themedStyles =
-    "mb-4 text-body-text justify-text-header text-(length:--ul-theme-font-subtitle-size) font-subtitle";
+    "text-body-text justify-text-header text-(length:--ul-theme-font-subtitle-size) font-subtitle text-[16px] leading-[24px] font-normal text-[#4B4B4C]";
 
   return (
     <p className={cn(themedStyles, className)} {...rest}>

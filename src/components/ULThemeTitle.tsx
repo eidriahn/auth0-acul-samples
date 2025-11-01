@@ -15,7 +15,7 @@ export interface ULThemeTitleProps extends HTMLAttributes<HTMLDivElement> {
 
 const ULThemeTitle = ({ children, className, ...rest }: ULThemeTitleProps) => {
   const themedStyles =
-    "mt-6 mb-4 text-header justify-text-header text-(length:--ul-theme-font-title-size) font-title";
+    "text-header justify-text-header text-(length:--ul-theme-font-title-size) font-title text-8 leading-10 tracking-[-0.015em] text-black";
 
   return (
     <h1 className={cn(themedStyles, className)} {...rest}>

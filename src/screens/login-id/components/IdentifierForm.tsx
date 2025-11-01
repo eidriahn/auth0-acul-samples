@@ -86,10 +86,13 @@ function IdentifierForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col items-start w-full"
+      >
         {/* General alerts at the top */}
         {generalErrors.length > 0 && (
-          <div className="space-y-3 mb-4">
+          <div className="space-y-3 mb-4 w-full">
             {generalErrors.map((error: Error, index: number) => (
               <ULThemeAlert key={index} variant="destructive">
                 <ULThemeAlertTitle>{error.message}</ULThemeAlertTitle>
@@ -100,7 +103,7 @@ function IdentifierForm() {
 
         {/* Country Code Picker - only show if phone numbers are supported */}
         {shouldShowCountryPicker && (
-          <div className="mb-4">
+          <div className="pb-6 w-full">
             <ULThemeCountryCodePicker
               selectedCountry={transformAuth0CountryCode(
                 (loginIdInstance?.transaction as TransactionMembersOnLoginId)
@@ -115,52 +118,56 @@ function IdentifierForm() {
           </div>
         )}
 
-        {/* Identifier input field */}
-        <FormField
-          control={form.control}
-          name="identifier"
-          rules={{
-            required: "This field is required",
-            maxLength: {
-              value: 100,
-              message: "Maximum 100 characters allowed",
-            },
-          }}
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <ULThemeFloatingLabelField
-                {...field}
-                label={identifierLabel}
-                type={identifierType}
-                autoFocus={true}
-                autoComplete={identifierAutoComplete}
-                error={!!fieldState.error || !!identifierSDKError}
-              />
-              <ULThemeFormMessage
-                sdkError={identifierSDKError}
-                hasFormError={!!fieldState.error}
-              />
-            </FormItem>
-          )}
-        />
+        {/* Input row with bottom padding */}
+        <div className="pb-6 w-full">
+          <FormField
+            control={form.control}
+            name="identifier"
+            rules={{
+              required: "This field is required",
+              maxLength: {
+                value: 100,
+                message: "Maximum 100 characters allowed",
+              },
+            }}
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <ULThemeFloatingLabelField
+                  {...field}
+                  label={identifierLabel}
+                  type={identifierType}
+                  autoFocus={true}
+                  autoComplete={identifierAutoComplete}
+                  error={!!fieldState.error || !!identifierSDKError}
+                />
+                <ULThemeFormMessage
+                  sdkError={identifierSDKError}
+                  hasFormError={!!fieldState.error}
+                />
+              </FormItem>
+            )}
+          />
+        </div>
 
         {/* Forgot Password link */}
-        <div className="text-left mb-4">
-          {isForgotPasswordEnabled && localizedResetPasswordLink && (
+        {isForgotPasswordEnabled && localizedResetPasswordLink && (
+          <div className="text-left pb-4 w-full">
             <ULThemeLink href={localizedResetPasswordLink}>
               {forgotPasswordText}
             </ULThemeLink>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Submit button */}
-        <ULThemePrimaryButton
-          type="submit"
-          className="w-full"
-          disabled={isSubmitting}
-        >
-          {buttonText}
-        </ULThemePrimaryButton>
+        {/* Button row with bottom padding */}
+        <div className="pb-4 w-full">
+          <ULThemePrimaryButton
+            type="submit"
+            className="w-full"
+            disabled={isSubmitting}
+          >
+            {buttonText}
+          </ULThemePrimaryButton>
+        </div>
       </form>
     </Form>
   );

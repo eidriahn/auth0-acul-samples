@@ -29,8 +29,8 @@
     "name": "login-id",
     "texts": {
       "pageTitle": "Log in | Acul react",
-      "title": "Welcome",
-      "description": "Log in to dev-tenant to continue to my acul react.",
+      "title": "Enter email",
+      "description": "Let's get started by entering a few details below!",
       "separatorText": "Or",
       "buttonText": "Continue",
       "footerLinkText": "Sign up",
@@ -40,7 +40,7 @@
       "signupActionText": "Don't have an account?",
       "passwordPlaceholder": "Password",
       "usernamePlaceholder": "Username or email address",
-      "emailPlaceholder": "Email address",
+      "emailPlaceholder": "Email",
       "phonePlaceholder": "Phone number",
       "usernameOnlyPlaceholder": "Username",
       "phoneOrUsernameOrEmailPlaceholder": "Phone or Username or Email",
@@ -211,13 +211,13 @@
         },
         "page_background": {
           "page_layout": "center",
-          "background_color": "#bababa"
+          "background_color": "#FFFFFF"
         },
         "widget": {
           "logo_position": "center",
-          "logo_url": "https://cdn.auth0.com/blog/auth0_by_okta_logo_black.png",
-          "logo_height": 52,
-          "header_text_alignment": "center",
+          "logo_url": "https://www.planetfitness.com/remix/images/icons/Logo-Primary.svg",
+          "logo_height": 80,
+          "header_text_alignment": "left",
           "social_buttons_layout": "bottom"
         },
         "displayName": "Unnamed Theme"

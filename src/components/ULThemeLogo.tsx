@@ -30,7 +30,7 @@ const ULThemeLogo = ({
   const isLogoHidden =
     extractTokenValue("--ul-theme-widget-logo-position") === "none";
   const themedStylesAvatar = "flex flex-wrap justify-widget-logo";
-  const themedStylesAvatarImg = "h-(--height-widget-logo)";
+  const themedStylesAvatarImg = "h-(--height-widget-logo) aspect-auto";
   const logoSrc = themedLogoSrcValue || imageUrl;
 
   return (

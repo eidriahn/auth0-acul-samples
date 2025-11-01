@@ -11,6 +11,7 @@ const ulThemeFloatingLabelFieldVariants = cva(
   [
     // Layout & Spacing
     "mb-2",
+    "h-[52px]",
 
     // Base Background & Colors
     "theme-universal:bg-input-bg",
@@ -19,13 +20,17 @@ const ulThemeFloatingLabelFieldVariants = cva(
     // Border Styling
     "theme-universal:border-(length:--ul-theme-border-input-border-weight)",
     "theme-universal:border-input-border",
+    "theme-universal:border",
 
-    // Border Radius
+    // Border Radius - rounded corners like in design
     "theme-universal:rounded-input",
+    "theme-universal:rounded-[10px]",
 
     // Typography - Input Text
     "theme-universal:text-(length:--ul-theme-font-body-text-size)",
     "theme-universal:font-body-text",
+    "theme-universal:text-[16px]",
+    "theme-universal:leading-[24px]",
 
     // Placeholder Styling
     "theme-universal:placeholder:text-input-labels",
@@ -42,6 +47,8 @@ const ulThemeFloatingLabelFieldVariants = cva(
     "theme-universal:[&_label]:text-input-labels",
     "theme-universal:[&_label]:text-(length:--ul-theme-font-input-labels-size)",
     "theme-universal:[&_label]:font-input-label",
+    "theme-universal:[&_label]:text-[16px]",
+    "theme-universal:[&_label]:leading-[24px]",
   ],
   {
     variants: {

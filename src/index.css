@@ -29,6 +29,11 @@ Created to support alignment related utlities like justify, text-align etc with 
   .justify-widget-logo {
     justify-content: var(--ul-theme-widget-logo-position);
   }
+
+  /** Custom Utility to handle title font weight **/
+  .font-title {
+    font-weight: var(--font-weight-title);
+  }
 }
 
 /** UDS Default theme variables **/
@@ -173,7 +178,7 @@ Created to support alignment related utlities like justify, text-align etc with 
   --ul-theme-font-reference-text-size: 16px;
   --ul-theme-font-links-style: normal;
   --ul-theme-font-title-size: 1.5rem;
-  --ul-theme-font-title-weight: 400;
+  --ul-theme-font-title-weight: 700;
   --ul-theme-font-subtitle-size: 0.875rem;
   --ul-theme-font-subtitle-weight: 400;
   --ul-theme-font-body-text-size: 0.875rem;
@@ -199,6 +204,7 @@ Created to support alignment related utlities like justify, text-align etc with 
 
   /* Global base styles not directly tied to Tailwind utility names */
   font-family:
+    "Barlow",
     ui-sans-serif,
     system-ui,
     -apple-system,

@@ -75,7 +75,7 @@ function LoginForm() {
 
   // Proper submit handler with form data
   const onSubmit = async (data: LoginFormData) => {
-    await handleLogin(data.username, data.password, data.captcha);
+    await handleLogin(data.username, data.password);
   };
 
   const localizedResetPasswordLink =

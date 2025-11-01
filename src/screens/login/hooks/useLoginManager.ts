@@ -16,17 +16,12 @@ export const useLoginManager = () => {
 
   const handleLogin = async (
     username: string,
-    password: string,
-    captcha?: string
+    password: string
   ): Promise<void> => {
     const options: { username: string; password: string; captcha?: string } = {
       username: username?.trim() || "",
       password: password || "",
     };
-
-    if (screen.isCaptchaAvailable && captcha?.trim()) {
-      options.captcha = captcha.trim();
-    }
 
     executeSafely(`Login with options: ${JSON.stringify(options)}`, () =>
       loginInstance.login(options)
