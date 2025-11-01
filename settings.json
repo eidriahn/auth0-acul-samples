@@ -10,7 +10,7 @@
     {
       "tag": "base",
       "attributes": {
-        "href": "https://your-cdn-domain.com/"
+        "href": "https://auth0-acul-samples-cp82n3vm4-lyzergics-projects.vercel.app/"
       }
     },
     {
@@ -24,34 +24,34 @@
       "tag": "link",
       "attributes": {
         "rel": "stylesheet",
-        "href": "https://your-cdn-domain.com/assets/shared/style.[hash].css"
+        "href": "https://auth0-acul-samples-cp82n3vm4-lyzergics-projects.vercel.app/assets/shared/style.BGJ-qy0R.css"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://your-cdn-domain.com/assets/main.[hash].js",
+        "src": "https://auth0-acul-samples-cp82n3vm4-lyzergics-projects.vercel.app/assets/main.CbK0IyRa.js",
         "type": "module"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://your-cdn-domain.com/assets/shared/common.[hash].js",
+        "src": "https://auth0-acul-samples-cp82n3vm4-lyzergics-projects.vercel.app/assets/shared/common.eG_Mukhl.js",
         "type": "module"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://your-cdn-domain.com/assets/shared/vendor.[hash].js",
+        "src": "https://auth0-acul-samples-cp82n3vm4-lyzergics-projects.vercel.app/assets/shared/vendor.p2u3JPrj.js",
         "type": "module"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://your-cdn-domain.com/assets/login-id/index.[hash].js",
+        "src": "https://auth0-acul-samples-cp82n3vm4-lyzergics-projects.vercel.app/assets/login-id/index.CTar6uOX.js",
         "type": "module"
       }
     }
