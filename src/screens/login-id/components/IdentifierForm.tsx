@@ -88,7 +88,23 @@ function IdentifierForm() {
   const shouldShowCountryPicker = isPhoneNumberSupported(allowedIdentifiers);
 
   const handlePasswordlessLoginStart = async () => {
-    console.log("Passwordless login start");
+    await fetch("https://test-rejoin.adrianluca.dev/passwordless/start", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        client_id: "558mf0ZUyMSVld5AMrL9stEFhIki6cQZ",
+        client_secret:
+          "k3gn8CJuUZlEaGG1DEaGVX2tCx-SEqOpdxuyebNWLvppBqe4DR8keCttpsFKVz6X",
+        connection: "email",
+        email: emailFieldVal,
+        send: "code",
+        authParams: {
+          scope: "openid",
+        },
+      }),
+    });
   };
 
   return (
