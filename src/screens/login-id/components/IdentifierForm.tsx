@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import type {
@@ -29,6 +30,10 @@ interface LoginIdFormData {
 }
 
 function IdentifierForm() {
+  const [step, setStep] = useState<"identifier" | "code-input" | "magic-link">(
+    "identifier"
+  );
+
   const {
     handleLoginId,
     errors,
@@ -87,7 +92,7 @@ function IdentifierForm() {
 
   const shouldShowCountryPicker = isPhoneNumberSupported(allowedIdentifiers);
 
-  const handlePasswordlessLoginStart = async () => {
+  const handlePasswordlessLoginStart = async (mode: string) => {
     await fetch("https://test-rejoin.adrianluca.dev/passwordless/start", {
       method: "POST",
       headers: {
@@ -99,19 +104,26 @@ function IdentifierForm() {
           "k3gn8CJuUZlEaGG1DEaGVX2tCx-SEqOpdxuyebNWLvppBqe4DR8keCttpsFKVz6X",
         connection: "email",
         email: emailFieldVal,
-        send: "code",
+        send: mode,
         authParams: {
           scope: "openid",
         },
       }),
     });
+
+    if (mode === "code") {
+      setStep("code-input");
+    } else if (mode === "link") {
+      setStep("magic-link");
+    }
   };
 
-  return (
-    <Form {...form}>
+  const content = {
+    identifier: (
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col items-start w-full"
+        id="identifier-form"
       >
         {/* General alerts at the top */}
         {generalErrors.length > 0 && (
@@ -180,32 +192,52 @@ function IdentifierForm() {
             </ULThemeLink>
           </div>
         )}
-
-        <div className="pb-4 w-full">
-          <ULThemePrimaryButton
-            type="button"
-            className="w-full"
-            disabled={
-              loginIdSchema.shape.email.safeParse(emailFieldVal).success ===
-              false
-            }
-            onClick={handlePasswordlessLoginStart}
-            variant="outline"
-          >
-            Send an Email
-          </ULThemePrimaryButton>
-        </div>
-        {/* Button row with bottom padding */}
-        <div className="pb-4 w-full">
-          <ULThemePrimaryButton
-            type="submit"
-            className="w-full"
-            disabled={isSubmitting}
-          >
-            {buttonText}
-          </ULThemePrimaryButton>
-        </div>
       </form>
+    ),
+    "code-input": <div>To be implemented </div>,
+    "magic-link": <div>To be implemented </div>,
+  };
+
+  return (
+    <Form {...form}>
+      {content[step]}
+      <div className="pb-4 w-full">
+        <ULThemePrimaryButton
+          type="button"
+          className="w-full"
+          disabled={
+            loginIdSchema.shape.email.safeParse(emailFieldVal).success === false
+          }
+          onClick={() => handlePasswordlessLoginStart("code")}
+          variant="outline"
+        >
+          Send an Code
+        </ULThemePrimaryButton>
+      </div>
+      <div className="pb-4 w-full">
+        <ULThemePrimaryButton
+          type="button"
+          className="w-full"
+          disabled={
+            loginIdSchema.shape.email.safeParse(emailFieldVal).success === false
+          }
+          onClick={() => handlePasswordlessLoginStart("link")}
+          variant="outline"
+        >
+          Send Magic link
+        </ULThemePrimaryButton>
+      </div>
+      {/* Button row with bottom padding */}
+      <div className="pb-4 w-full">
+        <ULThemePrimaryButton
+          type="submit"
+          className="w-full"
+          form="identifier-form"
+          disabled={isSubmitting}
+        >
+          {buttonText}
+        </ULThemePrimaryButton>
+      </div>
     </Form>
   );
 }

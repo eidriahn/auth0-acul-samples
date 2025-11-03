@@ -30,14 +30,14 @@
     {
       "tag": "script",
       "attributes": {
-        "src": "https://auth0-acul-samples.vercel.app/assets/main.CbK0IyRa.js",
+        "src": "https://auth0-acul-samples.vercel.app/assets/main.b9GMgx3z.js",
         "type": "module"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://auth0-acul-samples.vercel.app/assets/shared/common.eG_Mukhl.js",
+        "src": "https://auth0-acul-samples.vercel.app/assets/shared/common.D44ooM74.js",
         "type": "module"
       }
     },
@@ -51,7 +51,7 @@
     {
       "tag": "script",
       "attributes": {
-        "src": "https://auth0-acul-samples.vercel.app/assets/login-id/index.CTar6uOX.js",
+        "src": "https://auth0-acul-samples.vercel.app/assets/login-id/index.Ck9zNWuJ.js",
         "type": "module"
       }
     }
