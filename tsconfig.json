@@ -38,6 +38,11 @@
     "noImplicitReturns": true,
     "noImplicitOverride": true
   },
-  "include": ["src/**/*", "*.ts", "*.tsx"],
+  "include": [
+    "src/**/*",
+    "*.ts",
+    "*.tsx",
+    "src/screens/login-id/components/IdentifierForm.tsx"
+  ],
   "exclude": ["node_modules", "dist"]
 }

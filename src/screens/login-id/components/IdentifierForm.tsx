@@ -1,19 +1,20 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Dispatch, SetStateAction } from "react";
+import { useFormContext } from "react-hook-form";
 
 import type {
   Error,
   TransactionMembersOnLoginId,
 } from "@auth0/auth0-acul-js/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ULThemeFloatingLabelField } from "@/components/form/ULThemeFloatingLabelField";
 import { ULThemeFormMessage } from "@/components/form/ULThemeFormMessage";
-import { Form, FormField, FormItem } from "@/components/ui/form";
+import { FormField, FormItem } from "@/components/ui/form";
+import ULThemeCodeInput from "@/components/ULThemeCodeInput";
 import ULThemeCountryCodePicker from "@/components/ULThemeCountryCodePicker";
 import { ULThemeAlert, ULThemeAlertTitle } from "@/components/ULThemeError";
 import ULThemeLink from "@/components/ULThemeLink";
-import { ULThemePrimaryButton } from "@/components/ULThemePrimaryButton";
+import ULThemeSubtitle from "@/components/ULThemeSubtitle";
+import ULThemeTitle from "@/components/ULThemeTitle";
 import {
   isPhoneNumberSupported,
   transformAuth0CountryCode,
@@ -23,19 +24,11 @@ import { getIdentifierDetails } from "@/utils/helpers/identifierUtils";
 import { rebaseLinkToCurrentOrigin } from "@/utils/helpers/urlUtils";
 
 import { useLoginIdManager } from "../hooks/useLoginIdManager";
-import { loginIdSchema } from "../schemas";
 
-interface LoginIdFormData {
-  email: string;
-}
+import { IdentifierScreenStep, LoginIdFormData } from "./ScreenController";
 
-function IdentifierForm() {
-  const [step, setStep] = useState<"identifier" | "code-input" | "magic-link">(
-    "identifier"
-  );
-
+export const IdentifierForm = () => {
   const {
-    handleLoginId,
     errors,
     resetPasswordLink,
     isForgotPasswordEnabled,
@@ -43,23 +36,10 @@ function IdentifierForm() {
     texts,
     handlePickCountryCode,
   } = useLoginIdManager();
-
-  const form = useForm<LoginIdFormData>({
-    defaultValues: {
-      email: "",
-    },
-    resolver: zodResolver(loginIdSchema),
-  });
-
-  const {
-    watch,
-    formState: { isSubmitting },
-  } = form;
+  const { control } = useFormContext<LoginIdFormData>();
 
   // Handle text fallbacks in component
-  const buttonText = texts?.buttonText || "Continue";
   const forgotPasswordText = texts?.forgotPasswordText || "Forgot Password?";
-  const emailFieldVal = watch("email");
 
   // Get general errors (not field-specific)
   const generalErrors =
@@ -82,164 +62,216 @@ function IdentifierForm() {
     autoComplete: identifierAutoComplete,
   } = getIdentifierDetails(allowedIdentifiers, texts);
 
-  // Proper submit handler with form data
-  const onSubmit = async (data: LoginIdFormData) => {
-    await handleLoginId(data.email);
-  };
-
   const localizedResetPasswordLink =
     resetPasswordLink && rebaseLinkToCurrentOrigin(resetPasswordLink);
 
   const shouldShowCountryPicker = isPhoneNumberSupported(allowedIdentifiers);
 
-  const handlePasswordlessLoginStart = async (mode: string) => {
-    await fetch("https://test-rejoin.adrianluca.dev/passwordless/start", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        client_id: "558mf0ZUyMSVld5AMrL9stEFhIki6cQZ",
-        client_secret:
-          "k3gn8CJuUZlEaGG1DEaGVX2tCx-SEqOpdxuyebNWLvppBqe4DR8keCttpsFKVz6X",
-        connection: "email",
-        email: emailFieldVal,
-        send: mode,
-        authParams: {
-          scope: "openid",
-        },
-      }),
-    });
+  return (
+    <>
+      {/* General alerts at the top */}
+      {generalErrors.length > 0 && (
+        <div className="space-y-3 mb-4 w-full">
+          {generalErrors.map((error: Error, index: number) => (
+            <ULThemeAlert key={index} variant="destructive">
+              <ULThemeAlertTitle>{error.message}</ULThemeAlertTitle>
+            </ULThemeAlert>
+          ))}
+        </div>
+      )}
 
-    if (mode === "code") {
-      setStep("code-input");
-    } else if (mode === "link") {
-      setStep("magic-link");
-    }
-  };
-
-  const content = {
-    identifier: (
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col items-start w-full"
-        id="identifier-form"
-      >
-        {/* General alerts at the top */}
-        {generalErrors.length > 0 && (
-          <div className="space-y-3 mb-4 w-full">
-            {generalErrors.map((error: Error, index: number) => (
-              <ULThemeAlert key={index} variant="destructive">
-                <ULThemeAlertTitle>{error.message}</ULThemeAlertTitle>
-              </ULThemeAlert>
-            ))}
-          </div>
-        )}
-
-        {/* Country Code Picker - only show if phone numbers are supported */}
-        {shouldShowCountryPicker && (
-          <div className="pb-6 w-full">
-            <ULThemeCountryCodePicker
-              selectedCountry={transformAuth0CountryCode(
-                (loginIdInstance?.transaction as TransactionMembersOnLoginId)
-                  ?.countryCode,
-                (loginIdInstance?.transaction as TransactionMembersOnLoginId)
-                  ?.countryPrefix
-              )}
-              onClick={handlePickCountryCode}
-              fullWidth
-              placeholder="Select Country"
-            />
-          </div>
-        )}
-
-        {/* Input row with bottom padding */}
+      {/* Country Code Picker - only show if phone numbers are supported */}
+      {shouldShowCountryPicker && (
         <div className="pb-6 w-full">
-          <FormField
-            control={form.control}
-            name="email"
-            rules={{
-              required: "This field is required",
-              maxLength: {
-                value: 100,
-                message: "Maximum 100 characters allowed",
-              },
-            }}
-            render={({ field, fieldState }) => (
-              <FormItem>
-                <ULThemeFloatingLabelField
-                  {...field}
-                  label={identifierLabel}
-                  type={identifierType}
-                  autoFocus={true}
-                  autoComplete={identifierAutoComplete}
-                  error={!!fieldState.error || !!identifierSDKError}
-                />
-                <ULThemeFormMessage
-                  sdkError={identifierSDKError}
-                  hasFormError={!!fieldState.error}
-                />
-              </FormItem>
+          <ULThemeCountryCodePicker
+            selectedCountry={transformAuth0CountryCode(
+              (loginIdInstance?.transaction as TransactionMembersOnLoginId)
+                ?.countryCode,
+              (loginIdInstance?.transaction as TransactionMembersOnLoginId)
+                ?.countryPrefix
             )}
+            onClick={handlePickCountryCode}
+            fullWidth
+            placeholder="Select Country"
           />
         </div>
+      )}
 
-        {/* Forgot Password link */}
-        {isForgotPasswordEnabled && localizedResetPasswordLink && (
-          <div className="text-left pb-4 w-full">
-            <ULThemeLink href={localizedResetPasswordLink}>
-              {forgotPasswordText}
-            </ULThemeLink>
-          </div>
-        )}
-      </form>
-    ),
-    "code-input": <div>To be implemented </div>,
-    "magic-link": <div>To be implemented </div>,
-  };
+      {/* Input row with bottom padding */}
+      <div className="pb-6 w-full">
+        <FormField
+          control={control}
+          name="email"
+          rules={{
+            required: "This field is required",
+            maxLength: {
+              value: 100,
+              message: "Maximum 100 characters allowed",
+            },
+          }}
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <ULThemeFloatingLabelField
+                {...field}
+                label={identifierLabel}
+                type={identifierType}
+                autoFocus={true}
+                autoComplete={identifierAutoComplete}
+                error={!!fieldState.error || !!identifierSDKError}
+              />
+              <ULThemeFormMessage
+                sdkError={identifierSDKError}
+                hasFormError={!!fieldState.error}
+              />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      {/* Forgot Password link */}
+      {isForgotPasswordEnabled && localizedResetPasswordLink && (
+        <div className="text-left pb-4 w-full">
+          <ULThemeLink href={localizedResetPasswordLink}>
+            {forgotPasswordText}
+          </ULThemeLink>
+        </div>
+      )}
+    </>
+  );
+};
+
+export const CodeInputContent = ({
+  startPasswordless: resendCode,
+  setStep,
+}: {
+  startPasswordless: (mode: "code" | "link") => Promise<void>;
+  setStep: Dispatch<SetStateAction<IdentifierScreenStep>>;
+}) => {
+  const { watch, control, setValue } = useFormContext<LoginIdFormData>();
+  const email = watch("email");
 
   return (
-    <Form {...form}>
-      {content[step]}
-      <div className="pb-4 w-full">
-        <ULThemePrimaryButton
-          type="button"
-          className="w-full"
-          disabled={
-            loginIdSchema.shape.email.safeParse(emailFieldVal).success === false
-          }
-          onClick={() => handlePasswordlessLoginStart("code")}
-          variant="outline"
-        >
-          Send an Code
-        </ULThemePrimaryButton>
+    <div className="flex flex-col items-center w-full gap-6">
+      {/* Title and description */}
+      <div className="text-center w-full space-y-2">
+        <ULThemeTitle>Enter verification code</ULThemeTitle>
+        <ULThemeSubtitle>
+          We&apos;ve sent a 6-digit code to{" "}
+          <span className="font-semibold">{email}</span>. Please enter it below.
+        </ULThemeSubtitle>
       </div>
-      <div className="pb-4 w-full">
-        <ULThemePrimaryButton
-          type="button"
-          className="w-full"
-          disabled={
-            loginIdSchema.shape.email.safeParse(emailFieldVal).success === false
-          }
-          onClick={() => handlePasswordlessLoginStart("link")}
-          variant="outline"
-        >
-          Send Magic link
-        </ULThemePrimaryButton>
-      </div>
-      {/* Button row with bottom padding */}
-      <div className="pb-4 w-full">
-        <ULThemePrimaryButton
-          type="submit"
-          className="w-full"
-          form="identifier-form"
-          disabled={isSubmitting}
-        >
-          {buttonText}
-        </ULThemePrimaryButton>
-      </div>
-    </Form>
-  );
-}
 
-export default IdentifierForm;
+      {/* Code Input */}
+      <div className="w-full flex justify-center pb-2">
+        <FormField
+          control={control}
+          name="code"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-center">
+              <ULThemeCodeInput
+                length={6}
+                value={field.value}
+                onChange={field.onChange}
+                autoFocus
+              />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      {/* Resend link */}
+      <div className="text-center w-full">
+        <ULThemeSubtitle className="inline">
+          Didn&apos;t receive the code?{" "}
+        </ULThemeSubtitle>
+        <ULThemeLink
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            resendCode("code");
+          }}
+        >
+          Resend code
+        </ULThemeLink>
+      </div>
+
+      {/* Back link */}
+      <div className="text-center w-full">
+        <ULThemeLink
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setStep("identifier");
+            setValue("code", "");
+          }}
+        >
+          ← Back to login
+        </ULThemeLink>
+      </div>
+    </div>
+  );
+};
+
+export const MagicLinkContent = ({
+  startPasswordless,
+  setStep,
+}: {
+  startPasswordless: (mode: "code" | "link") => Promise<void>;
+  setStep: Dispatch<SetStateAction<IdentifierScreenStep>>;
+}) => {
+  const { watch } = useFormContext<LoginIdFormData>();
+  const email = watch("email");
+
+  return (
+    <div className="flex flex-col items-center w-full gap-6">
+      {/* Title and description */}
+      <div className="text-center w-full space-y-2">
+        <ULThemeTitle>Check your email</ULThemeTitle>
+        <ULThemeSubtitle>
+          We&apos;ve sent a magic link to{" "}
+          <span className="font-semibold">{email}</span>. Click the link in the
+          email to sign in.
+        </ULThemeSubtitle>
+      </div>
+
+      {/* Info message */}
+      <div className="w-full">
+        <ULThemeAlert className="border-base-focus/20 bg-base-focus/5 border">
+          <ULThemeAlertTitle className="text-base font-normal text-[#4B4B4C]">
+            <span className="font-semibold">Tip:</span> The link will expire in
+            15 minutes. If you don&apos;t see the email, check your spam folder.
+          </ULThemeAlertTitle>
+        </ULThemeAlert>
+      </div>
+
+      {/* Resend link */}
+      <div className="text-center w-full">
+        <ULThemeSubtitle className="inline">
+          Didn&apos;t receive the email?{" "}
+        </ULThemeSubtitle>
+        <ULThemeLink
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            startPasswordless("link");
+          }}
+        >
+          Resend link
+        </ULThemeLink>
+      </div>
+
+      {/* Back link */}
+      <div className="text-center w-full">
+        <ULThemeLink
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setStep("identifier");
+          }}
+        >
+          ← Back to login
+        </ULThemeLink>
+      </div>
+    </div>
+  );
+};

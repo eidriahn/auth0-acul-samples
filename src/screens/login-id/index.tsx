@@ -4,7 +4,7 @@ import { applyAuth0Theme } from "@/utils/theme/themeEngine";
 
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import IdentifierForm from "./components/IdentifierForm";
+import { ScreenController } from "./components/ScreenController";
 import { useLoginIdManager } from "./hooks/useLoginIdManager";
 
 function LoginIdScreen() {
@@ -21,7 +21,7 @@ function LoginIdScreen() {
     <ULThemePageLayout className="theme-universal">
       <ULThemeCard className="w-full max-w-[375px] gap-0">
         <Header />
-        <IdentifierForm />
+        <ScreenController />
         <Footer />
       </ULThemeCard>
     </ULThemePageLayout>
