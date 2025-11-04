@@ -20,6 +20,7 @@ export const ScreenActions = ({
     formState: { isSubmitting },
   } = useFormContext<LoginIdFormData>();
   const emailFieldVal = watch("email");
+  const [code, email] = watch(["code", "email"]);
 
   const { texts } = useLoginIdManager();
 
@@ -70,27 +71,37 @@ export const ScreenActions = ({
       </>
     );
   }
-  const code = watch("code");
 
   const handleVerifyCode = async () => {
     if (!code || code.length !== 6) {
       return;
     }
 
-    // Submit the verification code
-    await fetch("https://test-rejoin.adrianluca.dev/passwordless/verify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        client_id: env.VITE_AUTH0_CLIENT_ID,
-        client_secret: env.VITE_AUTH0_CLIENT_SECRET,
-        connection: "email",
-        email: emailFieldVal,
-        otp: code,
-      }),
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      email,
+      client_id: env.VITE_AUTH0_CLIENT_ID,
+      connection: "email",
+      verification_code: code,
     });
+
+    const res = await fetch(
+      `https://test-rejoin.adrianluca.dev/passwordless/verify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: raw,
+        redirect: "follow",
+      }
+    );
+
+    if (res.ok) {
+      window.location.href = "https://planetfitness.com/";
+    }
   };
 
   if (step === "code-input") {
@@ -99,7 +110,7 @@ export const ScreenActions = ({
         <ULThemePrimaryButton
           type="button"
           className="w-full"
-          disabled={!watch("code") || (watch("code")?.length ?? 0) !== 6}
+          disabled={!code || (code?.length ?? 0) !== 6}
           onClick={handleVerifyCode}
         >
           Verify Code

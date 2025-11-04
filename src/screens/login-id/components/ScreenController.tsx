@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -8,6 +8,7 @@ import { env } from "@/lib/env";
 import { useLoginIdManager } from "../hooks/useLoginIdManager";
 import { loginIdSchema } from "../schemas";
 
+import Header from "./Header";
 import {
   CodeInputContent,
   IdentifierForm,
@@ -73,21 +74,24 @@ export const ScreenController = () => {
   const Content = content[step];
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col items-start w-full"
-        id="identifier-form"
-      >
-        <Content
+    <>
+      <Header step={step} />
+      <FormProvider {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col items-start w-full"
+          id="identifier-form"
+        >
+          <Content
+            startPasswordless={handlePasswordlessLoginStart}
+            setStep={setStep}
+          />
+        </form>
+        <ScreenActions
+          step={step}
           startPasswordless={handlePasswordlessLoginStart}
-          setStep={setStep}
         />
-      </form>
-      <ScreenActions
-        step={step}
-        startPasswordless={handlePasswordlessLoginStart}
-      />
-    </Form>
+      </FormProvider>
+    </>
   );
 };

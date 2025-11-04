@@ -6,7 +6,7 @@ export interface ULThemeSubtitleProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * The subtitle of the screen.
    */
-  children: ReactNode;
+  children?: ReactNode;
   /**
    * Optional class names for additional styling or overriding default styles.
    */

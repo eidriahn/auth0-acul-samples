@@ -60,7 +60,14 @@
       "error": "Error",
       "captchaCodePlaceholder": "Enter the code shown above",
       "qrCode": "QR Code",
-      "spinner_push_notification_label": "Waiting for push notification to be accepted"
+      "spinner_push_notification_label": "Waiting for push notification to be accepted",
+
+      "enterCode": "Enter verification code",
+      "checkForCode": "We've sent a 6-digit code to <strong>adrianluca14@gmail.com</strong>. Please enter it below.",
+      "checkEmail": "Check your email",
+      "magicLinkSent": "We've sent a magic link to <strong>adrianluca14@gmail.com</strong>. Click the link in the email to sign in.",
+      "sendCode": "Send a code",
+      "sendMagicLink": "Send a magic link"
     }
   },
   "tenant": {

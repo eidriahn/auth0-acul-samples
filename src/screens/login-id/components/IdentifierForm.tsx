@@ -1,24 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 import { useFormContext } from "react-hook-form";
 
-import type {
-  Error,
-  TransactionMembersOnLoginId,
-} from "@auth0/auth0-acul-js/types";
+import type { Error } from "@auth0/auth0-acul-js/types";
 
 import { ULThemeFloatingLabelField } from "@/components/form/ULThemeFloatingLabelField";
 import { ULThemeFormMessage } from "@/components/form/ULThemeFormMessage";
 import { FormField, FormItem } from "@/components/ui/form";
 import ULThemeCodeInput from "@/components/ULThemeCodeInput";
-import ULThemeCountryCodePicker from "@/components/ULThemeCountryCodePicker";
 import { ULThemeAlert, ULThemeAlertTitle } from "@/components/ULThemeError";
 import ULThemeLink from "@/components/ULThemeLink";
 import ULThemeSubtitle from "@/components/ULThemeSubtitle";
-import ULThemeTitle from "@/components/ULThemeTitle";
-import {
-  isPhoneNumberSupported,
-  transformAuth0CountryCode,
-} from "@/utils/helpers/countryUtils";
 import { getFieldError } from "@/utils/helpers/errorUtils";
 import { getIdentifierDetails } from "@/utils/helpers/identifierUtils";
 import { rebaseLinkToCurrentOrigin } from "@/utils/helpers/urlUtils";
@@ -34,17 +25,15 @@ export const IdentifierForm = () => {
     isForgotPasswordEnabled,
     loginIdInstance,
     texts,
-    handlePickCountryCode,
   } = useLoginIdManager();
   const { control } = useFormContext<LoginIdFormData>();
-
   // Handle text fallbacks in component
   const forgotPasswordText = texts?.forgotPasswordText || "Forgot Password?";
 
   // Get general errors (not field-specific)
-  const generalErrors =
-    errors?.filter((error: Error) => !error.field || error.field === null) ||
-    [];
+  const generalErrors = (errors || []).filter(
+    (error: Error) => !error.field || error.field === null
+  );
 
   const identifierSDKError =
     getFieldError("identifier", errors) ||
@@ -65,8 +54,6 @@ export const IdentifierForm = () => {
   const localizedResetPasswordLink =
     resetPasswordLink && rebaseLinkToCurrentOrigin(resetPasswordLink);
 
-  const shouldShowCountryPicker = isPhoneNumberSupported(allowedIdentifiers);
-
   return (
     <>
       {/* General alerts at the top */}
@@ -77,23 +64,6 @@ export const IdentifierForm = () => {
               <ULThemeAlertTitle>{error.message}</ULThemeAlertTitle>
             </ULThemeAlert>
           ))}
-        </div>
-      )}
-
-      {/* Country Code Picker - only show if phone numbers are supported */}
-      {shouldShowCountryPicker && (
-        <div className="pb-6 w-full">
-          <ULThemeCountryCodePicker
-            selectedCountry={transformAuth0CountryCode(
-              (loginIdInstance?.transaction as TransactionMembersOnLoginId)
-                ?.countryCode,
-              (loginIdInstance?.transaction as TransactionMembersOnLoginId)
-                ?.countryPrefix
-            )}
-            onClick={handlePickCountryCode}
-            fullWidth
-            placeholder="Select Country"
-          />
         </div>
       )}
 
@@ -147,27 +117,16 @@ export const CodeInputContent = ({
   startPasswordless: (mode: "code" | "link") => Promise<void>;
   setStep: Dispatch<SetStateAction<IdentifierScreenStep>>;
 }) => {
-  const { watch, control, setValue } = useFormContext<LoginIdFormData>();
-  const email = watch("email");
+  const { control, setValue } = useFormContext<LoginIdFormData>();
 
   return (
     <div className="flex flex-col items-center w-full gap-6">
-      {/* Title and description */}
-      <div className="text-center w-full space-y-2">
-        <ULThemeTitle>Enter verification code</ULThemeTitle>
-        <ULThemeSubtitle>
-          We&apos;ve sent a 6-digit code to{" "}
-          <span className="font-semibold">{email}</span>. Please enter it below.
-        </ULThemeSubtitle>
-      </div>
-
-      {/* Code Input */}
       <div className="w-full flex justify-center pb-2">
         <FormField
           control={control}
           name="code"
           render={({ field }) => (
-            <FormItem className="flex flex-col items-center">
+            <FormItem>
               <ULThemeCodeInput
                 length={6}
                 value={field.value}
@@ -219,21 +178,8 @@ export const MagicLinkContent = ({
   startPasswordless: (mode: "code" | "link") => Promise<void>;
   setStep: Dispatch<SetStateAction<IdentifierScreenStep>>;
 }) => {
-  const { watch } = useFormContext<LoginIdFormData>();
-  const email = watch("email");
-
   return (
     <div className="flex flex-col items-center w-full gap-6">
-      {/* Title and description */}
-      <div className="text-center w-full space-y-2">
-        <ULThemeTitle>Check your email</ULThemeTitle>
-        <ULThemeSubtitle>
-          We&apos;ve sent a magic link to{" "}
-          <span className="font-semibold">{email}</span>. Click the link in the
-          email to sign in.
-        </ULThemeSubtitle>
-      </div>
-
       {/* Info message */}
       <div className="w-full">
         <ULThemeAlert className="border-base-focus/20 bg-base-focus/5 border">

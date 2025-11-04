@@ -3,7 +3,6 @@ import ULThemePageLayout from "@/components/ULThemePageLayout";
 import { applyAuth0Theme } from "@/utils/theme/themeEngine";
 
 import Footer from "./components/Footer";
-import Header from "./components/Header";
 import { ScreenController } from "./components/ScreenController";
 import { useLoginIdManager } from "./hooks/useLoginIdManager";
 
@@ -20,7 +19,6 @@ function LoginIdScreen() {
     // Applying UDS theme overrides using the "theme-universal" class
     <ULThemePageLayout className="theme-universal">
       <ULThemeCard className="w-full max-w-[375px] gap-0">
-        <Header />
         <ScreenController />
         <Footer />
       </ULThemeCard>
