@@ -10,7 +10,7 @@
     {
       "tag": "base",
       "attributes": {
-        "href": "https://test-rejoin.adrianluca.dev/"
+        "href": "https://auth0-acul-samples.vercel.app/"
       }
     },
     {
@@ -24,34 +24,34 @@
       "tag": "link",
       "attributes": {
         "rel": "stylesheet",
-        "href": "https://test-rejoin.adrianluca.dev/assets/shared/style.kCDrdYPL.css"
+        "href": "https://auth0-acul-samples.vercel.app/assets/shared/style.kCDrdYPL.css"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://test-rejoin.adrianluca.dev/assets/main.DGXFAbbS.js ",
+        "src": "https://auth0-acul-samples.vercel.app/assets/main.B3xD_vzY.js",
         "type": "module"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://test-rejoin.adrianluca.dev/assets/shared/common.DWi1JLXI.js",
+        "src": "https://auth0-acul-samples.vercel.app/assets/shared/common.r_zFkPEZ.js",
         "type": "module"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://test-rejoin.adrianluca.dev/assets/shared/vendor.BCNSAhPb.js",
+        "src": "https://auth0-acul-samples.vercel.app/assets/shared/vendor.BCNSAhPb.js",
         "type": "module"
       }
     },
     {
       "tag": "script",
       "attributes": {
-        "src": "https://test-rejoin.adrianluca.dev/assets/login-id/index.CPigg3gZ.js",
+        "src": "https://auth0-acul-samples.vercel.app/assets/login-id/index.C6mLjtVd.js",
         "type": "module"
       }
     }

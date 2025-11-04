@@ -101,7 +101,7 @@ const FloatingLabelField = React.forwardRef<
           <FieldPrimitive.Label
             htmlFor={props.id}
             className={cn(
-              "pointer-events-none absolute top-1/2 left-4 z-[10] -translate-y-1/2 text-sm transition-all duration-150 ease-in-out origin-left",
+              "pointer-events-none absolute top-1/2 left-4 z-10 -translate-y-1/2 text-sm transition-all duration-150 ease-in-out origin-left",
               startAdornment && "left-0",
               // Floating state - position within border area
               isLabelFloating &&

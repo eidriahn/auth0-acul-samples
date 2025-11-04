@@ -1,7 +1,8 @@
 import { useFormContext } from "react-hook-form";
 
 import { ULThemePrimaryButton } from "@/components/ULThemePrimaryButton";
-import { env } from "@/lib/env";
+import { usePasswordlessCodeVerify } from "@/hooks/usePasswordless";
+import { startPasswordlessLogin } from "@/lib/requests/passwordless";
 
 import { useLoginIdManager } from "../hooks/useLoginIdManager";
 import { loginIdSchema } from "../schemas";
@@ -13,7 +14,9 @@ export const ScreenActions = ({
   startPasswordless,
 }: {
   step: IdentifierScreenStep;
-  startPasswordless: (mode: "code" | "link") => Promise<void>;
+  startPasswordless: (
+    mode: Parameters<typeof startPasswordlessLogin>[0]["mode"]
+  ) => Promise<void>;
 }) => {
   const {
     watch,
@@ -23,6 +26,13 @@ export const ScreenActions = ({
   const [code, email] = watch(["code", "email"]);
 
   const { texts } = useLoginIdManager();
+  const { mutateAsync, isPending } = usePasswordlessCodeVerify({
+    onSuccess: (data) => {
+      if (data.ok) {
+        window.location.href = "https://planetfitness.com/";
+      }
+    },
+  });
 
   const buttonText = texts?.buttonText || "Continue";
 
@@ -77,31 +87,7 @@ export const ScreenActions = ({
       return;
     }
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-      email,
-      client_id: env.VITE_AUTH0_CLIENT_ID,
-      connection: "email",
-      verification_code: code,
-    });
-
-    const res = await fetch(
-      `https://test-rejoin.adrianluca.dev/passwordless/verify`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: raw,
-        redirect: "follow",
-      }
-    );
-
-    if (res.ok) {
-      window.location.href = "https://planetfitness.com/";
-    }
+    await mutateAsync({ email, code });
   };
 
   if (step === "code-input") {
@@ -110,7 +96,7 @@ export const ScreenActions = ({
         <ULThemePrimaryButton
           type="button"
           className="w-full"
-          disabled={!code || (code?.length ?? 0) !== 6}
+          disabled={!code || (code?.length ?? 0) !== 6 || isPending}
           onClick={handleVerifyCode}
         >
           Verify Code

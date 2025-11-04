@@ -10,6 +10,7 @@ import ULThemeCodeInput from "@/components/ULThemeCodeInput";
 import { ULThemeAlert, ULThemeAlertTitle } from "@/components/ULThemeError";
 import ULThemeLink from "@/components/ULThemeLink";
 import ULThemeSubtitle from "@/components/ULThemeSubtitle";
+import { PasswordlessMode } from "@/lib/requests/passwordless";
 import { getFieldError } from "@/utils/helpers/errorUtils";
 import { getIdentifierDetails } from "@/utils/helpers/identifierUtils";
 import { rebaseLinkToCurrentOrigin } from "@/utils/helpers/urlUtils";
@@ -114,7 +115,7 @@ export const CodeInputContent = ({
   startPasswordless: resendCode,
   setStep,
 }: {
-  startPasswordless: (mode: "code" | "link") => Promise<void>;
+  startPasswordless: (mode: PasswordlessMode) => Promise<void>;
   setStep: Dispatch<SetStateAction<IdentifierScreenStep>>;
 }) => {
   const { control, setValue } = useFormContext<LoginIdFormData>();
@@ -175,7 +176,7 @@ export const MagicLinkContent = ({
   startPasswordless,
   setStep,
 }: {
-  startPasswordless: (mode: "code" | "link") => Promise<void>;
+  startPasswordless: (mode: PasswordlessMode) => Promise<void>;
   setStep: Dispatch<SetStateAction<IdentifierScreenStep>>;
 }) => {
   return (

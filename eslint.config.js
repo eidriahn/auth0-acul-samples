@@ -6,6 +6,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 // Main ESLint configuration array (flat config format)
 export default tseslint.config(
@@ -83,5 +84,7 @@ export default tseslint.config(
   },
 
   // Disables all formatting rules that conflict with Prettier. Must be last.
-  eslintConfigPrettier
+  eslintConfigPrettier,
+  // Plugin for TanStack Query
+  pluginQuery.configs["flat/recommended"]
 );

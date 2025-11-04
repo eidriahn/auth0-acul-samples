@@ -1,3 +1,4 @@
+import { TanstackProvider } from "@/components/TanstackProvider";
 import ULThemeCard from "@/components/ULThemeCard";
 import ULThemePageLayout from "@/components/ULThemePageLayout";
 import { applyAuth0Theme } from "@/utils/theme/themeEngine";
@@ -16,13 +17,15 @@ function LoginIdScreen() {
   applyAuth0Theme(loginIdInstance);
 
   return (
-    // Applying UDS theme overrides using the "theme-universal" class
-    <ULThemePageLayout className="theme-universal">
-      <ULThemeCard className="w-full max-w-[375px] gap-0">
-        <ScreenController />
-        <Footer />
-      </ULThemeCard>
-    </ULThemePageLayout>
+    <TanstackProvider>
+      {/* Applying UDS theme overrides using the "theme-universal" class */}
+      <ULThemePageLayout className="theme-universal">
+        <ULThemeCard className="w-full max-w-[375px] gap-0">
+          <ScreenController />
+          <Footer />
+        </ULThemeCard>
+      </ULThemePageLayout>
+    </TanstackProvider>
   );
 }
 

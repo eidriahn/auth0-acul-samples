@@ -1,36 +1,10 @@
 # Auth0 Advanced Customizations for Universal Login Template
 
-> ⚠️ **Important Notice (Oct 2025):**  
-> This repository is being restructured into a **monorepo** that will host multiple framework-specific samples (React SDK, JS/TS SDK, etc.).  
-> If you’re looking for the **previous single-sample version**, please use the **v1.x** tag:
->
-> ```bash
-> git clone https://github.com/auth0-samples/auth0-acul-samples.git
-> cd auth0-acul-samples
-> git checkout v1.0.0
-> ```
->
-> The new monorepo version will be released on **Oct 31, 2025**.
-
----
-
-This project provides a production-ready template for creating custom Auth0 Advanced Customizations for Universal Login (ACUL) screens using React, TypeScript, and Tailwind CSS. The template follows the same design language and user experience patterns as Auth0's Universal Login screens while integrating with the [Auth0 ACUL SDK](https://github.com/auth0/universal-login) to provide seamless authentication functionality.
-
 **What is ACUL?** Advanced Customizations for Universal Login (ACUL) is an Early Access capability that allows you to build custom, client-rendered versions of Universal Login screens, giving you control over every pixel of your authentication experience. ACUL uses a client/server model where you have full control over the client-side interface while leveraging the security, extensibility, and flexibility of Universal Login's hosted authentication on the server side.
 
 > **⚠️ Important Notes**
 >
 > - **Early Access Feature**: ACUL is currently in Early Access (EA) and not yet Generally Available (GA)
-> - **Enterprise Feature**: Requires Enterprise Auth0 plan and verified custom domain
-> - **Work in Progress**: This template repository is actively being developed
-
-<div align="center">
-  <img 
-    width="800" 
-    alt="Login ID Screen with mock data" 
-    src="https://github.com/user-attachments/assets/70c747fa-6374-46d4-a0d8-29c08cdd1f99" />
-  <p><em>Login ID Screen with mock data on local setup</em></p>
-</div>
 
 ## Table of Contents
 
@@ -39,7 +13,6 @@ This project provides a production-ready template for creating custom Auth0 Adva
 - [Screens](#screens)
 - [Build Structure](#build-structure)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
 - [Documentation](#documentation)
 - [Troubleshooting](#troubleshooting)
 
@@ -75,21 +48,6 @@ Perfect for exploring the codebase, building new screens, or customizing existin
 - Enterprise Auth0 plan (for ACUL access)
 
 > **Open Source Contributors:** You can explore and contribute to this codebase using mock data without needing an Auth0 Enterprise plan.
-
-<details>
-<summary>Need to install Node.js?</summary>
-
-We recommend using NVM (Node Version Manager):
-
-- macOS/Linux: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash`
-- Windows: Install [nvm-windows](https://github.com/coreybutler/nvm-windows)
-
-```bash
-nvm install 22
-nvm use 22
-```
-
-</details>
 
 ### Testing with Real Auth0
 
@@ -241,34 +199,6 @@ default_screen_deployment_status:
 
 <a id="contributing"></a>
 
-## Contributing
-
-We welcome contributions! Here's how you can help:
-
-**Getting Started:**
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Make your changes using mock data for testing
-4. Test thoroughly: `npm run test`
-5. Submit a pull request
-
-**What to Contribute:**
-
-- Bug fixes and improvements
-- Documentation updates
-- Test coverage improvements
-- Component enhancements
-
-**Development Guidelines:**
-
-- Follow the existing code patterns in `src/screens/`
-- Use TypeScript for type safety
-- Follow the Auth0 design system principles
-- Include tests for new functionality
-
-<a id="documentation"></a>
-
 ## Documentation
 
 - **[Auth0 ACUL Documentation](https://auth0.com/docs/customize/login-pages/advanced-customizations)** - Official ACUL guide
@@ -310,23 +240,5 @@ We welcome contributions! Here's how you can help:
 - **Community Discussion:** [Auth0 Community Forum](https://community.auth0.com/)
 - **Documentation:** [Auth0 ACUL Docs](https://auth0.com/docs/customize/login-pages/advanced-customizations)
 - **Feature Requests:** [Open a discussion](https://github.com/auth0-samples/auth0-acul-samples/discussions)
-
----
-
-## Migration and Legacy Information
-
-If your project depends on the old structure, you can continue using the **v1.x** releases.
-
-See the [Migration Guide](./docs/migration-guide.md) for details on:
-
-- What has changed in the monorepo structure
-- How to migrate
-- How to stay on the legacy version safely
-
----
-
-## Changelog
-
-See [CHANGELOG.md](./CHANGELOG.md) for a full list of changes between releases.
 
 ---

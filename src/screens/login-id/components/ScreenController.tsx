@@ -3,7 +3,8 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { env } from "@/lib/env";
+import { usePasswordlessLoginStart } from "@/hooks/usePasswordless";
+import { PasswordlessMode } from "@/lib/requests/passwordless";
 
 import { useLoginIdManager } from "../hooks/useLoginIdManager";
 import { loginIdSchema } from "../schemas";
@@ -41,28 +42,14 @@ export const ScreenController = () => {
   });
   const email = form.watch("email");
   const { handleLoginId } = useLoginIdManager();
+  const { mutate } = usePasswordlessLoginStart();
 
   const onSubmit = async (data: LoginIdFormData) => {
     await handleLoginId(data.email);
   };
 
-  const handlePasswordlessLoginStart = async (mode: string) => {
-    await fetch("https://test-rejoin.adrianluca.dev/passwordless/start", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        client_id: env.VITE_AUTH0_CLIENT_ID,
-        client_secret: env.VITE_AUTH0_CLIENT_SECRET,
-        connection: "email",
-        send: mode,
-        authParams: {
-          scope: "openid",
-        },
-      }),
-    });
+  const handlePasswordlessLoginStart = async (mode: PasswordlessMode) => {
+    mutate({ email, mode });
 
     if (mode === "code") {
       setStep("code-input");
